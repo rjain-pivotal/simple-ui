@@ -1,0 +1,165 @@
+/* global toastr:false, moment:false */
+(function () {
+  'use strict';
+
+  var config = {
+    env: "pivotal",
+    apiBaseUrl: "API_URL",
+    googleMapsKey: '=',
+    googleMapsClient: 'gme-',
+    googleMapsVersion: '3.23',
+    googleMapsLibraries: 'geometry,visualization',
+    onStarTermsLink: 'https://www.onstar.com/us/en/footer-links/terms-conditions.html',
+    onStarPrivacyPolicyLink:'https://www.onstar.com/us/en/footer-links/privacy-policy.html',
+    mavenPlusLink:'https://plus.mavendrive.com//',
+    googleMapsStyles: [{
+      "featureType": "all",
+      "elementType": "labels.text",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "all",
+      "elementType": "labels.text.fill",
+      "stylers": [{"saturation": 36}, {"color": "#000000"}, {"lightness": 40}]
+    }, {
+      "featureType": "all",
+      "elementType": "labels.text.stroke",
+      "stylers": [{"visibility": "off"}, {"color": "#000000"}, {"lightness": 16}]
+    }, {
+      "featureType": "all",
+      "elementType": "labels.icon",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "administrative",
+      "elementType": "geometry.fill",
+      "stylers": [{"color": "#000000"}, {"lightness": 20}, {"visibility": "off"}]
+    }, {
+      "featureType": "administrative",
+      "elementType": "geometry.stroke",
+      "stylers": [{"color": "#000000"}, {"lightness": 17}, {"weight": 1.2}, {"visibility": "off"}]
+    }, {
+      "featureType": "administrative",
+      "elementType": "labels.text",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "administrative",
+      "elementType": "labels.icon",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "landscape",
+      "elementType": "geometry",
+      "stylers": [{"color": "#000000"}, {"lightness": 20}]
+    }, {
+      "featureType": "landscape.man_made",
+      "elementType": "geometry.fill",
+      "stylers": [{"color": "#000000"}]
+    }, {
+      "featureType": "landscape.man_made",
+      "elementType": "geometry.stroke",
+      "stylers": [{"color": "#6a6a6a"}]
+    }, {
+      "featureType": "landscape.man_made",
+      "elementType": "labels.text",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "landscape.man_made",
+      "elementType": "labels.icon",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "poi",
+      "elementType": "geometry",
+      "stylers": [{"color": "#000000"}, {"lightness": 21}]
+    }, {"featureType": "poi", "elementType": "geometry.fill", "stylers": [{"color": "#000000"}]}, {
+      "featureType": "poi",
+      "elementType": "labels.text",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "poi",
+      "elementType": "labels.icon",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "poi.business",
+      "elementType": "geometry.fill",
+      "stylers": [{"color": "#000000"}]
+    }, {
+      "featureType": "poi.business",
+      "elementType": "labels.text",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "poi.business",
+      "elementType": "labels.text.fill",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "poi.business",
+      "elementType": "labels.text.stroke",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "poi.business",
+      "elementType": "labels.icon",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "road",
+      "elementType": "geometry.fill",
+      "stylers": [{"color": "#6a6a6a"}]
+    }, {"featureType": "road", "elementType": "labels", "stylers": [{"visibility": "off"}]}, {
+      "featureType": "road",
+      "elementType": "labels.text",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "road",
+      "elementType": "labels.icon",
+      "stylers": [{"visibility": "off"}]
+    }, {
+      "featureType": "road.highway",
+      "elementType": "geometry.fill",
+      "stylers": [{"color": "#000000"}, {"lightness": 17}]
+    }, {
+      "featureType": "road.highway",
+      "elementType": "geometry.stroke",
+      "stylers": [{"color": "#000000"}, {"lightness": 29}, {"weight": 0.2}]
+    }, {
+      "featureType": "road.arterial",
+      "elementType": "geometry",
+      "stylers": [{"color": "#000000"}, {"lightness": 18}]
+    }, {
+      "featureType": "road.local",
+      "elementType": "geometry",
+      "stylers": [{"color": "#000000"}, {"lightness": 16}]
+    }, {"featureType": "transit", "elementType": "all", "stylers": [{"visibility": "off"}]}, {
+      "featureType": "transit",
+      "elementType": "geometry",
+      "stylers": [{"color": "#000000"}, {"lightness": 19}]
+    }, {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [{"color": "#0f252e"}, {"lightness": 17}]
+    }, {
+      "featureType": "water",
+      "elementType": "geometry.fill",
+      "stylers": [{"color": "#000000"}]
+    }, {"featureType": "water", "elementType": "labels.text", "stylers": [{"visibility": "off"}]}],
+    stationIcon: '/assets/images/station_icon.png',
+    stationClusterIcon: '/assets/images/station_cluster.png',
+    activeStationIcon: '/assets/images/pin_expanded.png',
+    phoneNumber: "1-844-HIMAVEN",
+    phoneNumberLink: "18444462836",
+    emailAddress: "memberservices@mavendrive.com",
+    memberEmailAddress: "memberservices@mavendrive.com",
+    userInfoLink: 'app/user/user-info.html',
+    dlInfoLink: 'app/user/driver-license-info.html',
+    billingInfoLink: 'app/user/billing-info.html',
+
+    billingErrorMessages: {
+      Pending: 'Please enter your billing information in order to proceed.',
+      undisclosed: 'An error has occurred, please contact your administrator for further information.'
+    },
+    approvedBilling: "Approved",
+    useInviteCode: false
+  };
+
+  angular
+    .module('carshareNgcustomer')
+    .constant('toastr', toastr)
+    .constant('moment', moment)
+    .constant('uasConfig', config);
+
+})();
